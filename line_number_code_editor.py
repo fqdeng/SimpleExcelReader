@@ -28,12 +28,6 @@ class CodeEditor(QPlainTextEdit):
         self.updateLineNumberAreaWidth(0)
 
     def set_tab_length(self, tab_length):
-        """
-        Sets the tab length for a QPlainTextEdit widget.
-
-        :param plain_text_edit: The QPlainTextEdit widget.
-        :param tab_length: The tab length in number of spaces.
-        """
         # Getting the font metrics of the current font
         font_metrics = self.fontMetrics()
 
