@@ -59,6 +59,7 @@ class EditorWindow(QtWidgets.QMainWindow, Ui_PythonCodeEditor):
         # set clicked event
         self.executeButton.clicked.connect(self.execute_code)
         self.main_window = main_window
+        self.editor.set_tab_length(4)  # init the tab length to 4 spaces
 
     def execute_code(self):
         code = self.editor.toPlainText()
