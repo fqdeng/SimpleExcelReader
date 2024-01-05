@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QFileDialog
 
 import syntax_pars
+from common import SavePositionWindow
 from main_window import Ui_SimpleExcelReader
 from code_editor import Ui_PythonCodeEditor
 import platform
@@ -12,7 +13,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt
 
 
-class MainWindow(QtWidgets.QMainWindow, Ui_SimpleExcelReader):
+class MainWindow(SavePositionWindow, Ui_SimpleExcelReader):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
@@ -50,12 +51,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_SimpleExcelReader):
                 self.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(str(df.iloc[i, j])))
 
 
-class EditorWindow(QtWidgets.QMainWindow, Ui_PythonCodeEditor):
+class EditorWindow(SavePositionWindow, Ui_PythonCodeEditor):
     def __init__(self, parent=None, main_window: MainWindow = None):
         super(EditorWindow, self).__init__(parent)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setupUi(self)
-
         # set clicked event
         self.executeButton.clicked.connect(self.execute_code)
         self.main_window = main_window
@@ -78,8 +78,10 @@ def main():
     df = mainWindow.open_excel('./data.xls')
     editorWindow = EditorWindow(main_window=mainWindow)
     editorWindow.show()
-    mainWindowGeometry = mainWindow.frameGeometry()
-    editorWindow.move(mainWindowGeometry.topRight())
+
+    # mainWindowGeometry = mainWindow.frameGeometry()
+    # editorWindow.move(mainWindowGeometry.topRight())
+
     editor = editorWindow.editor
     editor.setStyleSheet("""QPlainTextEdit{
     	font-family:'Consolas'; 
