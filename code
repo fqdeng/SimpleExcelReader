@@ -1,5 +1,4 @@
 # context variables df
 # example code:
 # remove the first row of the dataframe
-df = df.drop(df.index[0])
-print(df)
+print(df[df['Age'] > 50])
