@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QFileDialog, QMainWindow, QApplication
 
+import fire
 import syntax_pars, os
 from common_window import SavePositionWindow
 from main_window import Ui_SimpleExcelReader
@@ -25,7 +26,7 @@ class MainWindow(SavePositionWindow, Ui_SimpleExcelReader, QMainWindow):
     def openFile(self):
         # Open a file dialog and set the filter to .xlsx files
         options = QFileDialog.Options()
-        filePath, _ = QFileDialog.getOpenFileName(self, "Open File", "", "Excel Files (*.xlsx)", options=options)
+        filePath, _ = QFileDialog.getOpenFileName(self, "Open File", "", "Excel Files (*.xlsx *xls)", options=options)
 
         if filePath:
             print(filePath)  # Or handle the file path as needed
@@ -92,17 +93,17 @@ class EditorHandler(QObject):
         self.editor_window.code = text
 
 
-class Main(QObject):
+class App(QObject):
     def __init__(self):
         super().__init__()
         self.ace_editor_window = None
 
-    def main(self):
+    def start(self, file_path=None):
         os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
         app = QtWidgets.QApplication(sys.argv)
         main_window = MainWindow()
         main_window.show()
-        main_window.open_excel('./data.xls')
+        main_window.open_excel(file_path)
 
         handler = EditorHandler()
         ace_editor_window = AceEditorWindow(handler=handler)
@@ -112,19 +113,20 @@ class Main(QObject):
         editor_window.show()
         handler.editor_window = editor_window
         self.ace_editor_window = ace_editor_window
-
-        # 创建 QTimer 对象
-        self.timer = QTimer(self)
-        # 设置定时器超时信号的回调函数
-        self.timer.timeout.connect(self.init_editor)
-        # 设置定时器的时间间隔（例如，1000 毫秒）
-        self.timer.start(2000)
-
+        self._init_code()
         # Register the signal handler for Ctrl+C
         signal.signal(signal.SIGINT, signal.SIG_DFL)
         sys.exit(app.exec_())
 
-    def init_editor(self):
+    def _init_code(self):
+        # 创建 QTimer 对象
+        self.timer = QTimer(self)
+        # 设置定时器超时信号的回调函数
+        self.timer.timeout.connect(self._init_editor)
+        # 设置定时器的时间间隔（例如，1000 毫秒）
+        self.timer.start(2000)
+
+    def _init_editor(self):
         with open('code', 'r') as file:
             code = file.read()
             self.ace_editor_window.set_editor_text(code)
@@ -137,6 +139,10 @@ def windows_hidpi_support():
         QtGui.QGuiApplication.setAttribute(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
 
+def main(file_path='./data.xls'):
+    App().start(file_path)
+
+
 if __name__ == "__main__":
     windows_hidpi_support()
-    Main().main()
+    fire.Fire(main)
