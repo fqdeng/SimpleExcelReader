@@ -52,6 +52,7 @@ class MainWindow(SavePositionWindow, Ui_SimpleExcelReader, QMainWindow):
                 self.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(str(df.iloc[i, j])))
 
     def closeEvent(self, event):
+        super().closeEvent(event)
         QApplication.instance().quit()
 
 
@@ -64,6 +65,7 @@ class OutputWindow(SavePositionWindow, Ui_Output):
         self.executeButton.clicked.connect(self.execute_code)
         self.saveCodeButton.clicked.connect(self.save_code)
         self.main_window = main_window
+        self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         self.code = ""
 
     def execute_code(self):
