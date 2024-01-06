@@ -68,8 +68,6 @@ class OutputWindow(SavePositionWindow, Ui_Output):
         self.code = ""
 
     def execute_code(self):
-        print("execute:")
-        print(self.code)
         cxt = {'df': self.main_window.get_df(), 'window': self.main_window}
         self.plainTextEdit_2.setPlainText(
             util.eval_and_capture_output(self.code, context=cxt))
