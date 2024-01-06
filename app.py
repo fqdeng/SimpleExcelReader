@@ -54,6 +54,9 @@ class MainWindow(SavePositionWindow, Ui_SimpleExcelReader, QMainWindow):
 
     def closeEvent(self, event):
         super().closeEvent(event)
+        for widget in QApplication.topLevelWidgets():
+            if widget != self:
+                widget.close()
         QApplication.instance().quit()
 
 
