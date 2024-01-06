@@ -87,7 +87,6 @@ class EditorHandler(QObject):
 
     @pyqtSlot(str)
     def onTextChanged(self, text):
-        print("Text Changed:", text)
         self.editor_window.code = text
 
 
