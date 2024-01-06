@@ -14,11 +14,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_SimpleExcelReader(object):
     def setupUi(self, SimpleExcelReader):
         SimpleExcelReader.setObjectName("SimpleExcelReader")
-        SimpleExcelReader.setFixedSize(797, 507)
+        SimpleExcelReader.resize(797, 1000)
         self.centralwidget = QtWidgets.QWidget(SimpleExcelReader)
         self.centralwidget.setObjectName("centralwidget")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(0, 0, 811, 471))
+        self.tableWidget.setGeometry(QtCore.QRect(0, 0, 811, 1000))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)

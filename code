@@ -1,4 +1,4 @@
-# context variables df
+# Tips: df = df[df['Age'] > 50] then will change the left sheet window
 # example code:
-# remove the first row of the dataframe
 print(df[df['Age'] > 50])
+

@@ -2,6 +2,7 @@ import sys
 import json
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
+
 # save the position and size of the window
 class SavePositionWindow(QMainWindow):
     def __init__(self, parent=None):
