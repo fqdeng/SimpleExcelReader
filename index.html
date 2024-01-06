@@ -22,12 +22,12 @@
     </style>
 </head>
 <body>
-<div id="editor" style="width: 800px ; height: 600px">Your code goes here...</div>
+<div id="editor" style="width: 800px ; height: 600px"></div>
 <script>
     document.addEventListener('dragstart', function (event) {
         event.preventDefault();
     });
-    var editor = ace.edit("editor");
+    const editor = ace.edit("editor");
 
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/python");

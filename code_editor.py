@@ -14,7 +14,7 @@ from line_number_code_editor import CodeEditor
 class Ui_PythonCodeEditor(object):
     def setupUi(self, PythonCodeEditor):
         PythonCodeEditor.setObjectName("PythonCodeEditor")
-        PythonCodeEditor.resize(598, 527)
+        PythonCodeEditor.setFixedSize(598, 527)
         self.centralwidget = QtWidgets.QWidget(PythonCodeEditor)
         self.centralwidget.setObjectName("centralwidget")
         self.editor = CodeEditor(self.centralwidget)

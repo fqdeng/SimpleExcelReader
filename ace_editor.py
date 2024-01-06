@@ -1,19 +1,26 @@
 import sys, os
+
+from PyQt5 import QtCore
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineScript
 
+from common import SavePositionWindow
+
 
 class EditorHandler(QObject):
+
     @pyqtSlot(str)
     def onTextChanged(self, text):
         print("Text Changed:", text)
 
 
-class AceEditorWindow(QMainWindow):
+class AceEditorWindow(SavePositionWindow, QMainWindow):
     def __init__(self):
         super().__init__()
+        _translate = QtCore.QCoreApplication.translate
+        self.setWindowTitle(_translate("vim", "vim"))
         self.initUI()
 
     def initUI(self):
@@ -43,6 +50,14 @@ class AceEditorWindow(QMainWindow):
         e = document.getElementById('editor')
         e.style.width = '{width}px';
         e.style.height = '{height}px';
+        """
+        # Execute the JavaScript code
+        self.browser.page().runJavaScript(js_code)
+
+    def set_editor_text(self, value):
+        # get the ace editor
+        js_code = f"""
+        editor.setValue(`{value}`)
         """
         # Execute the JavaScript code
         self.browser.page().runJavaScript(js_code)
