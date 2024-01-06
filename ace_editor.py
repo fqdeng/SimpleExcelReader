@@ -1,3 +1,4 @@
+import logging
 import sys, os
 
 from PyQt5 import QtCore
@@ -37,7 +38,7 @@ class AceEditorWindow(SavePositionWindow):
     def resizeEvent(self, event):
         # This code will be executed every time the window is resized
         new_size = event.size()
-        print(f"Window resized to: {new_size.width()}x{new_size.height()}")
+        logging.info(f"Window resized to: {new_size.width()}x{new_size.height()}")
         self.resize_ace_editor(new_size.width(), new_size.height())
         super().resizeEvent(event)  # Ensure the default handler runs too
 

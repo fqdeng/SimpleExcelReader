@@ -13,6 +13,7 @@ import pandas
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt, QTimer, QObject, pyqtSlot
 from ace_editor import AceEditorWindow
+import logging
 
 
 class MainWindow(SavePositionWindow, Ui_SimpleExcelReader, QMainWindow):
@@ -69,6 +70,7 @@ class OutputWindow(SavePositionWindow, Ui_Output):
 
     def execute_code(self):
         cxt = {'df': self.main_window.get_df(), 'window': self.main_window}
+        logging.info(f"Execute code: {self.code}")
         self.plainTextEdit_2.setPlainText(
             util.eval_and_capture_output(self.code, context=cxt))
         self.main_window.render_df(cxt["df"])
@@ -96,6 +98,8 @@ class App(QObject):
 
     def start(self, file_path=None):
         os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
+        logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='w',
+                            format='%(name)s - %(levelname)s - %(message)s')
         app = QtWidgets.QApplication(sys.argv)
         main_window = MainWindow()
         main_window.show()
