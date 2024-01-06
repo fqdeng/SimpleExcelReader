@@ -30,6 +30,7 @@ class AceEditorWindow(SavePositionWindow):
 
         self.setCentralWidget(self.browser)
         file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "index.html"))
+        print(file_path)
         local_url = QUrl.fromLocalFile(file_path)
         self.browser.load(local_url)
 
