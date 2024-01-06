@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="js/ace-builds/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <!--css style-->
+    <style>
+        /*css 初始化 */
+        html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img {
+            margin: 0;
+            padding: 0;
+        }
+
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+<div id="editor" style="width: 800px ; height: 600px">Your code goes here...</div>
+<script>
+    document.addEventListener('dragstart', function (event) {
+        event.preventDefault();
+    });
+    var editor = ace.edit("editor");
+
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+    editor.setKeyboardHandler("ace/keyboard/vim");
+
+    new QWebChannel(qt.webChannelTransport, function (channel) {
+        var editorHandler = channel.objects.editorHandler;
+        editor.getSession().on('change', function () {
+            var text = editor.getSession().getValue();
+            editorHandler.onTextChanged(text);
+        });
+    });
+</script>
+</body>
+</html>
+
