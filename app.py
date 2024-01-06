@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QFileDialog, QMainWindow, QApplication
 
 import fire
-import syntax_pars, os
+import os
 from common_window import SavePositionWindow
 from main_window import Ui_SimpleExcelReader
 from output_window import Ui_Output
