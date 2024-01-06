@@ -18,11 +18,10 @@ class AceEditorWindow(SavePositionWindow):
         self.initUI(handler)
         self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
 
-
     def initUI(self, handler):
         self.browser = QWebEngineView(self)
         self.setCentralWidget(self.browser)
-        self.resize(800,429)
+        self.resize(800, 429)
 
         self.channel = QWebChannel(self.browser.page())
         self.handler = handler
@@ -30,7 +29,7 @@ class AceEditorWindow(SavePositionWindow):
         self.browser.page().setWebChannel(self.channel)
 
         self.setCentralWidget(self.browser)
-        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "index.html"))
+        file_path = os.path.abspath(os.path.join(os.getcwd(), "index.html"))
         print(file_path)
         local_url = QUrl.fromLocalFile(file_path)
         self.browser.load(local_url)
