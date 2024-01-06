@@ -54,10 +54,7 @@ class MainWindow(SavePositionWindow, Ui_SimpleExcelReader, QMainWindow):
 
     def closeEvent(self, event):
         super().closeEvent(event)
-        for widget in QApplication.topLevelWidgets():
-            if widget != self:
-                widget.close()
-        QApplication.instance().quit()
+        util.close_app()
 
 
 class OutputWindow(SavePositionWindow, Ui_Output):
@@ -97,6 +94,7 @@ class App(QObject):
     def __init__(self):
         super().__init__()
         self.ace_editor_window = None
+        self.main_window = None
 
     def start(self, file_path=None):
         os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
@@ -106,6 +104,7 @@ class App(QObject):
         main_window = MainWindow()
         main_window.show()
         main_window.open_excel(file_path)
+        self.main_window = main_window
 
         handler = EditorHandler()
         ace_editor_window = AceEditorWindow(handler=handler)
@@ -116,8 +115,13 @@ class App(QObject):
         handler.editor_window = editor_window
         self.ace_editor_window = ace_editor_window
         self._init_code()
+
+        timer = QTimer()
+        timer.start(500)  # You may change this if you wish.
+        timer.timeout.connect(lambda: None)  # Let the interpreter run each 500 ms.
         # Register the signal handler for Ctrl+C
-        signal.signal(signal.SIGINT, signal.SIG_DFL)
+        signal.signal(signal.SIGINT, util.signal_handler)
+
         sys.exit(app.exec_())
 
     def _init_code(self):

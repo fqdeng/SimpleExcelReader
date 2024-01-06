@@ -1,6 +1,8 @@
 import contextlib
 import io
 
+from PyQt5.QtWidgets import QApplication
+
 
 def eval_and_capture_output(code, context={}):
     # Create a string stream to capture output
@@ -19,3 +21,13 @@ def eval_and_capture_output(code, context={}):
     captured_output = output_stream.getvalue()
 
     return captured_output
+
+
+def close_app():
+    for widget in QApplication.topLevelWidgets():
+        widget.close()
+    QApplication.instance().quit()
+
+
+def signal_handler(sig, frame):
+    close_app()
