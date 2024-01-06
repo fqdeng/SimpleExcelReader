@@ -18,7 +18,6 @@ from ace_editor import AceEditorWindow
 class MainWindow(SavePositionWindow, Ui_SimpleExcelReader, QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setupUi(self)
         self.actionOpen.triggered.connect(self.openFile)
         self.df = None
@@ -60,7 +59,6 @@ class MainWindow(SavePositionWindow, Ui_SimpleExcelReader, QMainWindow):
 class OutputWindow(SavePositionWindow, Ui_Output):
     def __init__(self, parent=None, main_window: MainWindow = None):
         super(OutputWindow, self).__init__(parent)
-        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setupUi(self)
         # set clicked event
         self.executeButton.clicked.connect(self.execute_code)
