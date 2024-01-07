@@ -1,13 +1,18 @@
 # SimpleExcelReader
+* simple excel reader is a simple tool for reading excel files and processing Excel files with python script. 
 
-* It aims to help python beginners to learn how to code,
-* also you can use it to read excel files and process it with python script
+# Feature
+* Read Excel files
+* Process Excel files with python script
+* Save Excel files
+* Support Windows, Linux, Mac
+* Vim Editor
 
-# Demo
+# Img
 <img src="./img/app.png">
 
 
-# Show
+# Gif
 
 <img src="./img/app.gif">
 
