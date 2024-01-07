@@ -80,7 +80,7 @@ class OutputWindow(SavePositionWindow, Ui_Output):
             file.write(self.code)
 
 
-class EditorHandler(QObject):
+class AceEditorHandler(QObject):
     def __init__(self):
         super().__init__()
         self.editor_window = None
@@ -106,7 +106,7 @@ class App(QObject):
         main_window.open_excel(file_path)
         self.main_window = main_window
 
-        handler = EditorHandler()
+        handler = AceEditorHandler()
         ace_editor_window = AceEditorWindow(handler=handler)
         ace_editor_window.show()
 
