@@ -1,3 +1,4 @@
+from __future__ import annotations
 import logging
 import sys, os
 
@@ -7,25 +8,43 @@ from PyQt5.QtCore import QUrl, QObject, pyqtSlot, Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineScript
 
+from app import App
 from common_window import SavePositionWindow
 
 
+class AceEditorHandler(QObject):
+    def __init__(self, app: App = None):
+        super().__init__()
+        self.app = app
+
+    @pyqtSlot(str)
+    def onTextChanged(self, text):
+        logging.info(f"Text changed: {text}")
+        self.app.code = text
+
+    @pyqtSlot()
+    def onEditorInit(self):
+        logging.info(f"Editor init")
+        self.app.init_editor()
+
+
 class AceEditorWindow(SavePositionWindow):
-    def __init__(self, handler: QObject = None):
+    def __init__(self, app: App = None):
         super().__init__()
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Vim", "Vim"))
-        self.initUI(handler)
+        self.app = app
+        self.initUI()
         self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
 
-    def initUI(self, handler):
+    def initUI(self):
         self.browser = QWebEngineView(self)
         self.setCentralWidget(self.browser)
         self.resize(800, 429)
 
         self.channel = QWebChannel(self.browser.page())
-        self.handler = handler
-        self.channel.registerObject("editorHandler", self.handler)
+        self.ace_editor_handler = AceEditorHandler(app=self.app)
+        self.channel.registerObject("editorHandler", self.ace_editor_handler)
         self.browser.page().setWebChannel(self.channel)
 
         self.setCentralWidget(self.browser)

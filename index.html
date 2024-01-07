@@ -39,7 +39,11 @@
             var text = editor.getSession().getValue();
             editorHandler.onTextChanged(text);
         });
+
+        console.log("editor initialized.")
+        editorHandler.onEditorInit()
     });
+
 </script>
 </body>
 </html>

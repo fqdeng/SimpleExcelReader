@@ -1,4 +1,3 @@
 # Tips: df = df[df['Age'] > 50] then will change the left sheet window
 # example code:
 print(df[df['Age'] > 50])
-
