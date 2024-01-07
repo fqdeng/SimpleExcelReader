@@ -98,9 +98,9 @@ class AceEditorWindow(SavePositionWindow):
         self.browser.load(local_url)
 
     def init_html_width_and_height(self):
-        with open("./index.html", "r") as f:
+        with open("./index.html", "r", encoding="utf-8") as f:
             html = f.read()
-        with open("./index.html", "w") as f:
+        with open("./index.html", "w", encoding="utf-8") as f:
             html = html.replace("800px", f"{self.width()}px")
             html = html.replace("600px", f"{self.height()}px")
             f.write(html)
