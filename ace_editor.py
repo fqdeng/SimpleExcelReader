@@ -68,6 +68,9 @@ class AceEditorHandler(QObject):
             util.close_app()
 
 
+_main_index_html_path = "./config/index.html"
+
+
 class CustomWebEnginePage(QWebEnginePage):
     def javaScriptConsoleMessage(self, level, message, line, sourceID):
         logging.info(f"JS: {message} (Line: {line} Source: {sourceID})")
@@ -101,15 +104,15 @@ class AceEditorWindow(SavePositionWindow):
 
         self.init_html_width_and_height()
 
-        file_path = os.path.abspath(os.path.join(os.getcwd(), "index.html"))
+        file_path = os.path.abspath(os.path.join(os.getcwd(), _main_index_html_path))
         logging.info(file_path)
         local_url = QUrl.fromLocalFile(file_path)
         self.browser.load(local_url)
 
     def init_html_width_and_height(self):
-        with open("./index.html", "r", encoding="utf-8") as f:
+        with open(_main_index_html_path, "r", encoding="utf-8") as f:
             html = f.read()
-        with open("./index.html", "w", encoding="utf-8") as f:
+        with open(_main_index_html_path, "w", encoding="utf-8") as f:
             html = html.replace("800px", f"{self.width()}px")
             html = html.replace("600px", f"{self.height()}px")
             f.write(html)

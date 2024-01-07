@@ -42,7 +42,7 @@ class CustomFormatter(logging.Formatter):
 
 
 def init_logging_config():
-    logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='w')
+    logging.basicConfig(level=logging.DEBUG, filename='./config/app.log', filemode='w')
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     # Create a stream handler (or any other handler)

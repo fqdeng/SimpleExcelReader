@@ -11,6 +11,8 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt, QTimer, QObject
 import logging
 
+_default_code_path = "./config/code"
+
 
 class App(QObject):
     def __init__(self):
@@ -19,7 +21,7 @@ class App(QObject):
         self.main_window = None
         self.output_window = None
         self.code = None
-        self.code_path = 'code'
+        self.code_path = _default_code_path
 
     def save_code(self, code=None, file_path=None):
         if file_path is None:
@@ -62,7 +64,7 @@ class App(QObject):
 
         sys.exit(app.exec_())
 
-    def init_editor(self, file_path='code'):
+    def init_editor(self, file_path=_default_code_path):
         with open(file_path, 'r') as file:
             self.code = file.read()
             self.ace_editor_window.set_editor_text(self.code)
@@ -74,7 +76,7 @@ def windows_hidpi_support():
         QtGui.QGuiApplication.setAttribute(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
 
-def main(file_path='./data.xls', debug=False):
+def main(file_path='./config/data.xls', debug=False):
     App().start(file_path, debug)
 
 
