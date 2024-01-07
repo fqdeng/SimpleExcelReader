@@ -14,7 +14,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_SimpleExcelReader(object):
     def setupUi(self, SimpleExcelReader):
         SimpleExcelReader.setObjectName("SimpleExcelReader")
-        SimpleExcelReader.resize(833, 860)
         self.centralwidget = QtWidgets.QWidget(SimpleExcelReader)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)

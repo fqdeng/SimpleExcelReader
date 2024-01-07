@@ -14,7 +14,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Output(object):
     def setupUi(self, Output):
         Output.setObjectName("Output")
-        Output.resize(740, 569)
         self.centralwidget = QtWidgets.QWidget(Output)
         self.centralwidget.setAutoFillBackground(False)
         self.centralwidget.setObjectName("centralwidget")
