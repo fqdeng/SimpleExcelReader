@@ -69,3 +69,4 @@ def list_files_and_directories(path):
         logging.error(f"The path {path} does not exist.")
     except PermissionError:
         logging.error(f"Permission denied for accessing the path {path}.")
+    return []

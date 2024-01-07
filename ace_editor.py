@@ -1,10 +1,10 @@
 from __future__ import annotations
 import logging
-import sys, os
+import os
 
 from PyQt5 import QtCore
 from PyQt5.QtWebChannel import QWebChannel
-from PyQt5.QtCore import QUrl, QObject, pyqtSlot, Qt
+from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 
@@ -49,6 +49,7 @@ class AceEditorHandler(QObject):
 
         if command == "ls":
             logging.info(f"Show file list")
+            file_list = []
             if len(args) > 0:
                 logging.info(f"Show file list: {args[0]}")
                 file_list = util.list_files_and_directories(args[0])
@@ -59,6 +60,12 @@ class AceEditorHandler(QObject):
                 args.append(f'"{item}"')
             js_code = f"page.renderFileList([{','.join(args)}])"
             self.ace_editor.run_js_code(js_code)
+
+        if command == "execute":
+            self.app.output_window.execute_code()
+
+        if command == "quit":
+            util.close_app()
 
 
 class CustomWebEnginePage(QWebEnginePage):
@@ -129,6 +136,13 @@ class AceEditorWindow(SavePositionWindow):
         # Execute the JavaScript code
         self.run_js_code(js_code)
 
+    def focus_on_ace_editor(self):
+        js_code = f"""
+        editor.focus()
+        """
+        # Execute the JavaScript code
+        self.run_js_code(js_code)
+
     def run_js_code(self, js_code):
         self.browser.page().runJavaScript(js_code)
 
@@ -139,6 +153,7 @@ class AceEditorWindow(SavePositionWindow):
         """
         # Execute the JavaScript code
         self.run_js_code(js_code)
+        self.focus_on_ace_editor()
 
     def show_dev_tools(self):
         # Create a separate window for developer tools

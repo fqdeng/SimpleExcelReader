@@ -50,8 +50,9 @@ class App(QObject):
         output_window = OutputWindow(main_window=main_window, app=self)
         output_window.show()
         self.output_window = output_window
-
         self.ace_editor_window = ace_editor_window
+        self.ace_editor_window.activateWindow()
+        self.ace_editor_window.browser.setFocus()
 
         self.timer = QTimer()
         self.timer.start(500)  # You may change this if you wish.

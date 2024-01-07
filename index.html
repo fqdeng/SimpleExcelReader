@@ -99,19 +99,20 @@
 
         // vim command hooks
         ace.config.loadModule('ace/keyboard/vim', function (module) {
-            var VimApi = module.CodeMirror.Vim;
-            VimApi.defineEx('write', 'w', function (cm, input) {
-                console.log(`${cm}, ${input}`)
-                page.editorHandler.onCommand("write", input.args ? input.args : []);
-            });
-            VimApi.defineEx('edit', 'e', function (cm, input) {
-                console.log(`${cm}, ${input}`)
-                page.editorHandler.onCommand("edit", input.args ? input.args : []);
-            });
-            VimApi.defineEx('ls', 'l', function (cm, input) {
-                console.log(`${cm}, ${input}`)
-                page.editorHandler.onCommand("ls", input.args ? input.args : []);
-            });
+            const VimApi = module.CodeMirror.Vim;
+            [
+                {command: "write", simpleCommand: "w"},
+                {command: "edit", simpleCommand: "e"},
+                {command: "ls", simpleCommand: "l"},
+                {command: "execute", simpleCommand: "exe"},
+                {command: "quit", simpleCommand: "q"}
+            ]
+                .forEach(function (item) {
+                    VimApi.defineEx(item.command, item.simpleCommand, function (cm, input) {
+                        console.log(`${cm}, ${input}`)
+                        page.editorHandler.onCommand(item.command, input.args ? input.args : []);
+                    });
+                });
         });
 
 
@@ -125,7 +126,7 @@
 
     // when modal close, focus on editor
     $('#sticky').on($.modal.AFTER_CLOSE, function (event, modal) {
-        console.log("after close the modal, focus on editor.")
+        console.log("After close the modal, focus on editor.")
         $('textarea').focus()
     });
 
