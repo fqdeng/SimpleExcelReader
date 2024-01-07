@@ -78,7 +78,7 @@
                 console.log(`${cm}, ${input}`)
                 editorHandler.onCommand("edit", input.args ? input.args : []);
             });
-            VimApi.defineEx('ls', 'ls', function (cm, input) {
+            VimApi.defineEx('ls', 'l', function (cm, input) {
                 console.log(`${cm}, ${input}`)
                 editorHandler.onCommand("ls", input.args ? input.args : []);
             });
