@@ -22,7 +22,6 @@ class OutputWindow(SavePositionWindow, Ui_Output):
         self.executeButton.clicked.connect(self.execute_code)
         self.saveCodeButton.clicked.connect(self.save_code)
         self.main_window = main_window
-        #self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
 
         self.statusr_bar_timer = QtCore.QTimer()
         self.statusr_bar_timer.timeout.connect(self.clear_status_bar)

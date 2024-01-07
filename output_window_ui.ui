@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>766</width>
-    <height>505</height>
+    <width>740</width>
+    <height>569</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,7 @@
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
-    <property name="spacing">
-     <number>0</number>
-    </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -34,21 +31,29 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QPlainTextEdit" name="outputTextEdit"/>
-    </item>
-    <item>
-     <widget class="QPushButton" name="saveCodeButton">
-      <property name="text">
-       <string>SaveCode</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="executeButton">
-      <property name="text">
-       <string>Execute</string>
-      </property>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="1,15">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="executeButton">
+          <property name="text">
+           <string>Execute</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="saveCodeButton">
+          <property name="text">
+           <string>SaveCode</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPlainTextEdit" name="outputTextEdit"/>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
