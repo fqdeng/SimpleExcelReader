@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import fire
 import os
+import sys
 
 import platform
 import signal
-import sys
 import util
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt, QTimer, QObject
@@ -18,6 +18,16 @@ class App(QObject):
         self.ace_editor_window = None
         self.main_window = None
         self.code = None
+        self.code_path = 'code'
+
+    def save_code(self, code=None, file_path=None):
+        if file_path is None:
+            file_path = self.code_path
+        with open(file_path, 'w') as file:
+            if code is not None:
+                file.write(code)
+            else:
+                file.write(self.code)
 
     def start(self, file_path=None, debug=False):
         from main_window import MainWindow
@@ -25,8 +35,8 @@ class App(QObject):
         from ace_editor import AceEditorWindow
 
         os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
-        logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='w',
-                            format='%(name)s - %(levelname)s - %(message)s')
+        util.init_logging_config()
+
         app = QtWidgets.QApplication(sys.argv)
         main_window = MainWindow()
         main_window.show()
@@ -49,8 +59,8 @@ class App(QObject):
 
         sys.exit(app.exec_())
 
-    def init_editor(self):
-        with open('code', 'r') as file:
+    def init_editor(self, file_path='code'):
+        with open(file_path, 'r') as file:
             self.code = file.read()
             self.ace_editor_window.set_editor_text(self.code)
 

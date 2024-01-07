@@ -44,6 +44,6 @@ class OutputWindow(SavePositionWindow, Ui_Output):
         self.show_message_on_status_bar("Code Executed.")
 
     def save_code(self):
-        with open('code', 'w') as file:
-            file.write(self.app.code)
-            self.show_message_on_status_bar("Code Saved.")
+        logging.info(f"Save code: {self.app.code}")
+        self.app.save_code()
+        self.show_message_on_status_bar("Code Saved.")

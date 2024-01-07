@@ -2,6 +2,9 @@
 <html>
 <head>
     <script src="js/ace-builds/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery/plugin/modal/jquery.modal.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="js/jquery/plugin/modal/jquery.modal.min.css"/>
     <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
     <!--css style-->
     <style>
@@ -19,33 +22,99 @@
             right: 0;
             z-index: 9999;
         }
+
+        #fileList {
+            list-style-type: none; /* Remove default list style */
+            padding: 0; /* Remove default padding */
+        }
+
+        #fileList li {
+            display: inline-block; /* Display list items inline */
+            margin-right: 10px; /* Add some space between items */
+            /* You can add more styling here like padding, borders, etc. */
+        }
     </style>
 </head>
 <body>
 <div id="editor" style="width: 800px ; height: 429px ;   "></div>
-<script>
-    document.addEventListener('dragstart', function (event) {
-        event.preventDefault();
-    });
-    const editor = ace.edit("editor");
 
+<div id="sticky" class="modal">
+    <div class="modal-header">
+        <h2>File List</h2> (press Esc to close)
+    </div>
+    <div class="modal-body">
+        <ul id="fileList">
+        </ul>
+    </div>
+</div>
+
+<script>
+
+    // init ace editor
+    const editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/python");
     editor.setKeyboardHandler("ace/keyboard/vim");
 
+
+    // init python callbacks
     new QWebChannel(qt.webChannelTransport, function (channel) {
+
+        // editor callbacks
         var editorHandler = channel.objects.editorHandler;
         editor.getSession().on('change', function () {
             var text = editor.getSession().getValue();
             editorHandler.onTextChanged(text);
         });
 
+        // vim command hooks
+        ace.config.loadModule('ace/keyboard/vim', function (module) {
+            var VimApi = module.CodeMirror.Vim;
+            VimApi.defineEx('write', 'w', function (cm, input) {
+                console.log(`${cm}, ${input}`)
+                editorHandler.onCommand("write", input.args ? input.args : []);
+            });
+            VimApi.defineEx('edit', 'e', function (cm, input) {
+                console.log(`${cm}, ${input}`)
+                editorHandler.onCommand("edit", input.args ? input.args : []);
+            });
+            VimApi.defineEx('ls', 'ls', function (cm, input) {
+                console.log(`${cm}, ${input}`)
+                editorHandler.onCommand("ls", input.args ? input.args : []);
+            });
+        });
+
+        // editor initialized then let python open the file
         console.log("editor initialized.")
         editorHandler.onEditorInit()
     });
 
 
+    // when modal close, focus on editor
+    $('#sticky').on($.modal.AFTER_CLOSE, function (event, modal) {
+        console.log("after close the modal, focus on editor.")
+        $('textarea').focus()
+    });
+
+
+    // make python easier to call javascript code
+    const page = {}
+    page.renderFileList = function (fileList) {
+        $("#fileList").empty();
+        fileList.forEach(function (file) {
+            $("#fileList").append(`<li>${file}</li>`);
+        });
+        $("#sticky").modal({
+                escapeClose: true,
+                showClose: false
+            }
+        );
+        $('body').attr('tabindex', '-1').focus()
+    }
+
+
 </script>
+
 </body>
 </html>
 
