@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-<div id="editor" style="width: 800px; height: 600px;"></div>
+<div id="editor" style="width: 792px; height: 1006px;"></div>
 
 <div id="sticky" class="modal">
     <div class="modal-header">
@@ -77,10 +77,6 @@
             console.log(`Resize ace editor to: ${page.width}x${page.height}`)
             editor.style.width = `${page.width}px`;
             editor.style.height = `${page.height}px`;
-            setTimeout(function () {
-                editor.style.width = `${page.width}px`;
-                editor.style.height = `${page.height}px`;
-            }, 3000);
         }
     }
 

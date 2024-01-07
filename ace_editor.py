@@ -90,16 +90,20 @@ class AceEditorWindow(SavePositionWindow):
 
         self.setCentralWidget(self.browser)
 
-        with open("./index.html", "w") as f:
-            html = f.read()
-            html = html.replace("800px", f"{self.width()}px")
-            html = html.replace("600px", f"{self.height()}px")
-            f.write(html)
+        self.init_html_width_and_height()
 
         file_path = os.path.abspath(os.path.join(os.getcwd(), "index.html"))
         logging.info(file_path)
         local_url = QUrl.fromLocalFile(file_path)
         self.browser.load(local_url)
+
+    def init_html_width_and_height(self):
+        with open("./index.html", "r") as f:
+            html = f.read()
+        with open("./index.html", "w") as f:
+            html = html.replace("800px", f"{self.width()}px")
+            html = html.replace("600px", f"{self.height()}px")
+            f.write(html)
 
     def resizeEvent(self, event):
         # This code will be executed every time the window is resized
