@@ -19,7 +19,7 @@ class App(QObject):
         self.main_window = None
         self.code = None
 
-    def start(self, file_path=None):
+    def start(self, file_path=None, debug=False):
         from main_window import MainWindow
         from output_window import OutputWindow
         from ace_editor import AceEditorWindow
@@ -33,7 +33,7 @@ class App(QObject):
         main_window.open_excel(file_path)
         self.main_window = main_window
 
-        ace_editor_window = AceEditorWindow(app=self)
+        ace_editor_window = AceEditorWindow(app=self, debug=debug)
         ace_editor_window.show()
 
         editor_window = OutputWindow(main_window=main_window, app=self)
@@ -41,14 +41,13 @@ class App(QObject):
 
         self.ace_editor_window = ace_editor_window
 
-        timer = QTimer()
-        timer.start(500)  # You may change this if you wish.
-        timer.timeout.connect(lambda: None)  # Let the interpreter run each 500 ms.
+        self.timer = QTimer()
+        self.timer.start(500)  # You may change this if you wish.
+        self.timer.timeout.connect(lambda: None)  # Let the interpreter run each 500 ms.
         # Register the signal handler for Ctrl+C
         signal.signal(signal.SIGINT, util.signal_handler)
 
         sys.exit(app.exec_())
-
 
     def init_editor(self):
         with open('code', 'r') as file:
@@ -62,8 +61,8 @@ def windows_hidpi_support():
         QtGui.QGuiApplication.setAttribute(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
 
-def main(file_path='./data.xls'):
-    App().start(file_path)
+def main(file_path='./data.xls', debug=False):
+    App().start(file_path, debug)
 
 
 if __name__ == "__main__":

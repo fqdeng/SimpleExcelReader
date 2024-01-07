@@ -29,13 +29,15 @@ class AceEditorHandler(QObject):
 
 
 class AceEditorWindow(SavePositionWindow):
-    def __init__(self, app: App = None):
+    def __init__(self, app: App = None, debug=False):
         super().__init__()
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Vim", "Vim"))
         self.app = app
         self.initUI()
         self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+        if debug:
+            self.showDevTools()
 
     def initUI(self):
         self.browser = QWebEngineView(self)
@@ -76,6 +78,20 @@ class AceEditorWindow(SavePositionWindow):
         """
         # Execute the JavaScript code
         self.browser.page().runJavaScript(js_code)
+
+    def showDevTools(self):
+        # Create a separate window for developer tools
+        self.devToolsWindow = QMainWindow()
+        self.devToolsView = QWebEngineView()
+
+        # Set the developer tools view as the central widget of the new window
+        self.devToolsWindow.setCentralWidget(self.devToolsView)
+
+        # Connect the current page to the dev tools
+        self.browser.page().setDevToolsPage(self.devToolsView.page())
+
+        # Show the developer tools window
+        self.devToolsWindow.show()
 
 
 if __name__ == '__main__':
