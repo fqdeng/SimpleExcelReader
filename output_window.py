@@ -38,7 +38,7 @@ class OutputWindow(SavePositionWindow, Ui_Output):
     def execute_code(self):
         cxt = {'df': self.main_window.get_df(), 'window': self.main_window}
         logging.info(f"Execute code: {self.app.code}")
-        self.plainTextEdit_2.setPlainText(
+        self.outputTextEdit.setPlainText(
             util.eval_and_capture_output(self.app.code, context=cxt))
         self.main_window.render_df(cxt["df"])
         self.show_message_on_status_bar("Code Executed.")

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'SimpleExcelReader.ui'
+# Form implementation generated from reading ui file 'main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -14,16 +14,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_SimpleExcelReader(object):
     def setupUi(self, SimpleExcelReader):
         SimpleExcelReader.setObjectName("SimpleExcelReader")
+        SimpleExcelReader.resize(833, 860)
         self.centralwidget = QtWidgets.QWidget(SimpleExcelReader)
         self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(0, 0, 811, 1000))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
+        self.verticalLayout.addWidget(self.tableWidget)
         SimpleExcelReader.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(SimpleExcelReader)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 797, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 833, 22))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")

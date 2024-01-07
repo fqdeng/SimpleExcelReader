@@ -1,18 +1,18 @@
 {
     "OutputWindow": {
         "size": [
-            721,
-            997
+            766,
+            505
         ],
         "position": [
-            1731,
+            1013,
             136
         ]
     },
     "MainWindow": {
         "size": [
-            797,
-            1000
+            949,
+            949
         ],
         "position": [
             210,
@@ -21,8 +21,8 @@
     },
     "AceEditorWindow": {
         "size": [
-            792,
-            1006
+            841,
+            965
         ],
         "position": [
             781,
