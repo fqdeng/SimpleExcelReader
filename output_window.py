@@ -42,7 +42,7 @@ class OutputWindow(SavePositionWindow, Ui_Output):
         self.main_window.render_df(cxt["df"])
         self.show_message_on_status_bar("Code Executed.")
 
-    def save_code(self):
+    def save_code(self, file_path=None):
         logging.info(f"Save code: {self.app.code}")
-        self.app.save_code()
+        self.app.save_code(file_path=file_path)
         self.show_message_on_status_bar("Code Saved.")

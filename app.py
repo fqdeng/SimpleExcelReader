@@ -17,6 +17,7 @@ class App(QObject):
         super().__init__()
         self.ace_editor_window = None
         self.main_window = None
+        self.output_window = None
         self.code = None
         self.code_path = 'code'
 
@@ -46,8 +47,9 @@ class App(QObject):
         ace_editor_window = AceEditorWindow(app=self, debug=debug)
         ace_editor_window.show()
 
-        editor_window = OutputWindow(main_window=main_window, app=self)
-        editor_window.show()
+        output_window = OutputWindow(main_window=main_window, app=self)
+        output_window.show()
+        self.output_window = output_window
 
         self.ace_editor_window = ace_editor_window
 

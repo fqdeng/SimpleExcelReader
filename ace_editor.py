@@ -36,9 +36,9 @@ class AceEditorHandler(QObject):
         if command == "write":
             logging.info(f"Editor save")
             if len(args) > 0:
-                self.app.save_code(file_path=args[0])
+                self.app.output_window.save_code(file_path=args[0])
             else:
-                self.app.save_code()
+                self.app.output_window.save_code()
 
         if command == "edit":
             logging.info(f"Editor open file")
@@ -69,13 +69,15 @@ class CustomWebEnginePage(QWebEnginePage):
 class AceEditorWindow(SavePositionWindow):
     def __init__(self, app: App = None, debug=False):
         super().__init__()
+        self.dev_tools_view = None
+        self.dev_tools_window = None
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Vim", "Vim"))
         self.app = app
         self.initUI()
         # self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         if debug:
-            self.showDevTools()
+            self.show_dev_tools()
 
     def initUI(self):
         self.browser = QWebEngineView(self)
@@ -138,16 +140,16 @@ class AceEditorWindow(SavePositionWindow):
         # Execute the JavaScript code
         self.run_js_code(js_code)
 
-    def showDevTools(self):
+    def show_dev_tools(self):
         # Create a separate window for developer tools
-        self.devToolsWindow = QMainWindow()
-        self.devToolsView = QWebEngineView()
+        self.dev_tools_window = QMainWindow()
+        self.dev_tools_view = QWebEngineView()
 
         # Set the developer tools view as the central widget of the new window
-        self.devToolsWindow.setCentralWidget(self.devToolsView)
+        self.dev_tools_window.setCentralWidget(self.dev_tools_view)
 
         # Connect the current page to the dev tools
-        self.browser.page().setDevToolsPage(self.devToolsView.page())
+        self.browser.page().setDevToolsPage(self.dev_tools_view.page())
 
         # Show the developer tools window
-        self.devToolsWindow.show()
+        self.dev_tools_window.show()
