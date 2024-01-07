@@ -14,7 +14,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Output(object):
     def setupUi(self, Output):
         Output.setObjectName("Output")
-        Output.resize(800, 530)
         self.centralwidget = QtWidgets.QWidget(Output)
         self.centralwidget.setObjectName("centralwidget")
         self.plainTextEdit_2 = QtWidgets.QPlainTextEdit(self.centralwidget)

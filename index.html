@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-<div id="editor" style="width: 800px ; height: 429px ;   "></div>
+<div id="editor" style="width: 800px; height: 600px;"></div>
 
 <div id="sticky" class="modal">
     <div class="modal-header">
@@ -49,56 +49,9 @@
 </div>
 
 <script>
-
-    // init ace editor
-    const editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/python");
-    editor.setKeyboardHandler("ace/keyboard/vim");
-
-
-    // init python callbacks
-    new QWebChannel(qt.webChannelTransport, function (channel) {
-
-        // editor callbacks
-        var editorHandler = channel.objects.editorHandler;
-        editor.getSession().on('change', function () {
-            var text = editor.getSession().getValue();
-            editorHandler.onTextChanged(text);
-        });
-
-        // vim command hooks
-        ace.config.loadModule('ace/keyboard/vim', function (module) {
-            var VimApi = module.CodeMirror.Vim;
-            VimApi.defineEx('write', 'w', function (cm, input) {
-                console.log(`${cm}, ${input}`)
-                editorHandler.onCommand("write", input.args ? input.args : []);
-            });
-            VimApi.defineEx('edit', 'e', function (cm, input) {
-                console.log(`${cm}, ${input}`)
-                editorHandler.onCommand("edit", input.args ? input.args : []);
-            });
-            VimApi.defineEx('ls', 'l', function (cm, input) {
-                console.log(`${cm}, ${input}`)
-                editorHandler.onCommand("ls", input.args ? input.args : []);
-            });
-        });
-
-        // editor initialized then let python open the file
-        console.log("editor initialized.")
-        editorHandler.onEditorInit()
-    });
-
-
-    // when modal close, focus on editor
-    $('#sticky').on($.modal.AFTER_CLOSE, function (event, modal) {
-        console.log("after close the modal, focus on editor.")
-        $('textarea').focus()
-    });
-
-
+    //current page
+    let page = {}
     // make python easier to call javascript code
-    const page = {}
     page.renderFileList = function (fileList) {
         $("#fileList").empty();
         fileList.forEach(function (file) {
@@ -111,6 +64,74 @@
         );
         $('body').attr('tabindex', '-1').focus()
     }
+
+    page.resizeTheWindowSize = function (width, height) {
+        page.width = width
+        page.height = height
+        page._resizeTheWindowSize()
+    }
+
+    page._resizeTheWindowSize = function () {
+        const editor = document.getElementById('editor')
+        if (editor) {
+            console.log(`Resize ace editor to: ${page.width}x${page.height}`)
+            editor.style.width = `${page.width}px`;
+            editor.style.height = `${page.height}px`;
+            setTimeout(function () {
+                editor.style.width = `${page.width}px`;
+                editor.style.height = `${page.height}px`;
+            }, 3000);
+        }
+    }
+
+    // init ace editor
+    const editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+    editor.setKeyboardHandler("ace/keyboard/vim");
+
+
+    // init python callbacks
+    new QWebChannel(qt.webChannelTransport, function (channel) {
+
+        // editor callbacks
+        page.editorHandler = channel.objects.editorHandler;
+        editor.getSession().on('change', function () {
+            var text = editor.getSession().getValue();
+            page.editorHandler.onTextChanged(text);
+        });
+
+        // vim command hooks
+        ace.config.loadModule('ace/keyboard/vim', function (module) {
+            var VimApi = module.CodeMirror.Vim;
+            VimApi.defineEx('write', 'w', function (cm, input) {
+                console.log(`${cm}, ${input}`)
+                page.editorHandler.onCommand("write", input.args ? input.args : []);
+            });
+            VimApi.defineEx('edit', 'e', function (cm, input) {
+                console.log(`${cm}, ${input}`)
+                page.editorHandler.onCommand("edit", input.args ? input.args : []);
+            });
+            VimApi.defineEx('ls', 'l', function (cm, input) {
+                console.log(`${cm}, ${input}`)
+                page.editorHandler.onCommand("ls", input.args ? input.args : []);
+            });
+        });
+
+
+    });
+
+    $(document).ready(function () {
+        // editor initialized then let python open the file
+        console.log("editor initialized.")
+        page.editorHandler.onEditorInit()
+    });
+
+    // when modal close, focus on editor
+    $('#sticky').on($.modal.AFTER_CLOSE, function (event, modal) {
+        console.log("after close the modal, focus on editor.")
+        $('textarea').focus()
+    });
 
 
 </script>

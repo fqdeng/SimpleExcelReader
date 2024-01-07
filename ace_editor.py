@@ -27,6 +27,7 @@ class AceEditorHandler(QObject):
     @pyqtSlot()
     def onEditorInit(self):
         logging.info(f"Editor init")
+        self.ace_editor.resize_ace_editor()
         self.app.init_editor()
 
     @pyqtSlot(str, list)
@@ -72,7 +73,7 @@ class AceEditorWindow(SavePositionWindow):
         self.setWindowTitle(_translate("Vim", "Vim"))
         self.app = app
         self.initUI()
-        self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+        # self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         if debug:
             self.showDevTools()
 
@@ -81,7 +82,6 @@ class AceEditorWindow(SavePositionWindow):
         self.browser.setPage(CustomWebEnginePage(self.browser))
 
         self.setCentralWidget(self.browser)
-        self.resize(800, 429)
 
         self.channel = QWebChannel(self.browser.page())
         self.ace_editor_handler = AceEditorHandler(self.app, self)
@@ -89,6 +89,12 @@ class AceEditorWindow(SavePositionWindow):
         self.browser.page().setWebChannel(self.channel)
 
         self.setCentralWidget(self.browser)
+
+        with open("./index.html", "w") as f:
+            html = f.read()
+            html = html.replace("800px", f"{self.width()}px")
+            html = html.replace("600px", f"{self.height()}px")
+            f.write(html)
 
         file_path = os.path.abspath(os.path.join(os.getcwd(), "index.html"))
         logging.info(file_path)
@@ -98,15 +104,21 @@ class AceEditorWindow(SavePositionWindow):
     def resizeEvent(self, event):
         # This code will be executed every time the window is resized
         new_size = event.size()
-        logging.info(f"Window resized to: {new_size.width()}x{new_size.height()}")
+        logging.info(f"{self.__class__} Window resized to: {new_size.width()}x{new_size.height()}")
         self.resize_ace_editor(new_size.width(), new_size.height())
         super().resizeEvent(event)  # Ensure the default handler runs too
 
-    def resize_ace_editor(self, width, height):
+    def resize_ace_editor(self, width=None, height=None):
+        if width is None:
+            width = self.width()
+        if height is None:
+            height = self.height()
+
+        logging.info(f"Resize ace editor to: {width}x{height}")
         js_code = f"""
-        e = document.getElementById('editor')
-        e.style.width = '{width}px';
-        e.style.height = '{height}px';
+        if (page){{
+            page.resizeTheWindowSize({width},{height})
+        }}
         """
         # Execute the JavaScript code
         self.run_js_code(js_code)

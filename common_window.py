@@ -2,6 +2,8 @@ import sys
 import json
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
+_config_file = 'config.json'
+
 
 # save the position and size of the window
 class SavePositionWindow(QMainWindow):
@@ -18,7 +20,7 @@ class SavePositionWindow(QMainWindow):
             'size': [self.width(), self.height()],
             'position': [self.x(), self.y()]
         }
-        with open('config.json', 'r+') as file:
+        with open(_config_file, 'r+') as file:
             config = json.load(file)
             config[self.__class__.__name__] = window_settings
             file.seek(0)  # Reset file position to the beginning.
@@ -27,7 +29,7 @@ class SavePositionWindow(QMainWindow):
 
     def load_window_settings(self):
         try:
-            with open('config.json', 'r') as file:
+            with open(_config_file, 'r') as file:
                 config = json.load(file)
                 settings = config.get(self.__class__.__name__, {})
                 size = settings.get('size', [400, 300])
