@@ -21,12 +21,22 @@
     },
     "AceEditorWindow": {
         "size": [
-            823,
-            665
+            825,
+            662
         ],
         "position": [
             1186,
             178
+        ]
+    },
+    "SavePositionWindow": {
+        "size": [
+            850,
+            613
+        ],
+        "position": [
+            333,
+            484
         ]
     }
 }

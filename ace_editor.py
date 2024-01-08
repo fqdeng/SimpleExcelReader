@@ -12,6 +12,9 @@ import util
 from app import App
 from common_window import SavePositionWindow
 
+_main_index_html_path = "./config/index.html"
+real_index = "./config/main.html"
+
 
 class AceEditorHandler(QObject):
     def __init__(self, app: App, ace_editor: AceEditorWindow):
@@ -21,14 +24,13 @@ class AceEditorHandler(QObject):
 
     @pyqtSlot(str)
     def onTextChanged(self, text):
-        logging.debug(f"Text changed: {text}")
         self.app.code = text
 
     @pyqtSlot()
     def onEditorInit(self):
         logging.debug(f"Editor init")
-        self.ace_editor.resize_ace_editor()
         self.app.init_editor()
+        self.ace_editor.resize_ace_editor()
 
     @pyqtSlot(str, list)
     def onCommand(self, command, args: list):
@@ -68,9 +70,6 @@ class AceEditorHandler(QObject):
             util.close_app()
 
 
-_main_index_html_path = "./config/index.html"
-
-
 class CustomWebEnginePage(QWebEnginePage):
     def javaScriptConsoleMessage(self, level, message, line, sourceID):
         logging.debug(f"JS: {message} (Line: {line} Source: {sourceID})")
@@ -102,9 +101,10 @@ class AceEditorWindow(SavePositionWindow):
 
         self.setCentralWidget(self.browser)
 
+
         self.init_html_width_and_height()
 
-        file_path = os.path.abspath(os.path.join(os.getcwd(), _main_index_html_path))
+        file_path = os.path.abspath(os.path.join(os.getcwd(), real_index))
         logging.debug(file_path)
         local_url = QUrl.fromLocalFile(file_path)
         self.browser.load(local_url)
@@ -112,7 +112,7 @@ class AceEditorWindow(SavePositionWindow):
     def init_html_width_and_height(self):
         with open(_main_index_html_path, "r", encoding="utf-8") as f:
             html = f.read()
-        with open(_main_index_html_path, "w", encoding="utf-8") as f:
+        with open(real_index, "w", encoding="utf-8") as f:
             html = html.replace("800px", f"{self.width()}px")
             html = html.replace("600px", f"{self.height()}px")
             f.write(html)
@@ -160,7 +160,7 @@ class AceEditorWindow(SavePositionWindow):
 
     def show_dev_tools(self):
         # Create a separate window for developer tools
-        self.dev_tools_window = QMainWindow()
+        self.dev_tools_window = SavePositionWindow()
         self.dev_tools_view = QWebEngineView()
 
         # Set the developer tools view as the central widget of the new window
