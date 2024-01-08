@@ -11,8 +11,6 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt, QTimer, QObject
 import logging
 
-_default_code_path = "./config/code"
-
 
 class App(QObject):
     def __init__(self):
@@ -21,7 +19,7 @@ class App(QObject):
         self.main_window = None
         self.output_window = None
         self.code = None
-        self.code_path = _default_code_path
+        self.code_path = None
 
     def save_code(self, code=None, file_path=None):
         if file_path is None or file_path is False:
@@ -32,10 +30,12 @@ class App(QObject):
             else:
                 file.write(self.code)
 
-    def start(self, file_path=None, debug=False):
+    def start(self, file_path=None, code_file_path=None, debug=False):
         from main_window import MainWindow
         from output_window import OutputWindow
         from ace_editor import AceEditorWindow
+
+        self.code_path = code_file_path
 
         os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
         util.init_logging_config(debug=debug)
@@ -64,7 +64,9 @@ class App(QObject):
 
         sys.exit(app.exec_())
 
-    def init_editor(self, file_path=_default_code_path):
+    def init_editor(self, file_path=None):
+        if file_path is None:
+            file_path = self.code_path
         with open(file_path, 'r') as file:
             self.code = file.read()
             self.ace_editor_window.set_editor_text(self.code)
@@ -76,8 +78,8 @@ def windows_hidpi_support():
         QtGui.QGuiApplication.setAttribute(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
 
-def main(file_path='./config/data.xls', debug=False):
-    App().start(file_path, debug)
+def main(file_path='./config/data.xls', code_file_path="./config/code", debug=False):
+    App().start(file_path, code_file_path, debug)
 
 
 if __name__ == "__main__":
