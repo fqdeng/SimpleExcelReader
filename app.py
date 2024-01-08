@@ -24,7 +24,7 @@ class App(QObject):
         self.code_path = _default_code_path
 
     def save_code(self, code=None, file_path=None):
-        if file_path is None:
+        if file_path is None or file_path is False:
             file_path = self.code_path
         with open(file_path, 'w') as file:
             if code is not None:
