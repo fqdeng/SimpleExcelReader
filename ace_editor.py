@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import json
 import logging
 import os
 
@@ -101,7 +103,6 @@ class AceEditorWindow(SavePositionWindow):
 
         self.setCentralWidget(self.browser)
 
-
         self.init_html_width_and_height()
 
         file_path = os.path.abspath(os.path.join(os.getcwd(), real_index))
@@ -151,8 +152,9 @@ class AceEditorWindow(SavePositionWindow):
 
     def set_editor_text(self, value):
         # get the ace editor
+        value_json = json.dumps(value)
         js_code = f"""
-        editor.setValue(`{value}`)
+        editor.setValue({value_json})
         """
         # Execute the JavaScript code
         self.run_js_code(js_code)
