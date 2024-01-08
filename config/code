@@ -1,4 +1,4 @@
 # Tips: df = df[df['Age'] > 50] then will change the left sheet window
-# Implemented vim command: ls(l) edit(e) write(w) execute(x) quit(q)
+# Implemented vim command: ls(l) edit(e) write(w) execute(exec) quit(q)
 # Example code:
 print(df[df['Age'] > 50])

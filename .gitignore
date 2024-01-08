@@ -4,3 +4,4 @@ venv/
 build
 dist
 app.log
+.venv
