@@ -21,37 +21,37 @@ class AceEditorHandler(QObject):
 
     @pyqtSlot(str)
     def onTextChanged(self, text):
-        logging.info(f"Text changed: {text}")
+        logging.debug(f"Text changed: {text}")
         self.app.code = text
 
     @pyqtSlot()
     def onEditorInit(self):
-        logging.info(f"Editor init")
+        logging.debug(f"Editor init")
         self.ace_editor.resize_ace_editor()
         self.app.init_editor()
 
     @pyqtSlot(str, list)
     def onCommand(self, command, args: list):
-        logging.info(f"Editor command: {command} {args}")
+        logging.debug(f"Editor command: {command} {args}")
         if command == "write":
-            logging.info(f"Editor save")
+            logging.debug(f"Editor save")
             if len(args) > 0:
                 self.app.output_window.save_code(file_path=args[0])
             else:
                 self.app.output_window.save_code()
 
         if command == "edit":
-            logging.info(f"Editor open file")
+            logging.debug(f"Editor open file")
             if len(args) > 0:
-                logging.info(f"Editor open file: {args[0]}")
+                logging.debug(f"Editor open file: {args[0]}")
                 self.app.init_editor(file_path=args[0])
                 self.app.code_path = args[0]
 
         if command == "ls":
-            logging.info(f"Show file list")
+            logging.debug(f"Show file list")
             file_list = []
             if len(args) > 0:
-                logging.info(f"Show file list: {args[0]}")
+                logging.debug(f"Show file list: {args[0]}")
                 file_list = util.list_files_and_directories(args[0])
             else:
                 file_list = util.list_files_and_directories(os.getcwd())
@@ -73,7 +73,7 @@ _main_index_html_path = "./config/index.html"
 
 class CustomWebEnginePage(QWebEnginePage):
     def javaScriptConsoleMessage(self, level, message, line, sourceID):
-        logging.info(f"JS: {message} (Line: {line} Source: {sourceID})")
+        logging.debug(f"JS: {message} (Line: {line} Source: {sourceID})")
 
 
 class AceEditorWindow(SavePositionWindow):
@@ -105,7 +105,7 @@ class AceEditorWindow(SavePositionWindow):
         self.init_html_width_and_height()
 
         file_path = os.path.abspath(os.path.join(os.getcwd(), _main_index_html_path))
-        logging.info(file_path)
+        logging.debug(file_path)
         local_url = QUrl.fromLocalFile(file_path)
         self.browser.load(local_url)
 
@@ -120,7 +120,7 @@ class AceEditorWindow(SavePositionWindow):
     def resizeEvent(self, event):
         # This code will be executed every time the window is resized
         new_size = event.size()
-        logging.info(f"{self.__class__} Window resized to: {new_size.width()}x{new_size.height()}")
+        logging.debug(f"{self.__class__} Window resized to: {new_size.width()}x{new_size.height()}")
         self.resize_ace_editor(new_size.width(), new_size.height())
         super().resizeEvent(event)  # Ensure the default handler runs too
 
@@ -130,7 +130,7 @@ class AceEditorWindow(SavePositionWindow):
         if height is None:
             height = self.height()
 
-        logging.info(f"Resize ace editor to: {width}x{height}")
+        logging.debug(f"Resize ace editor to: {width}x{height}")
         js_code = f"""
         if (page){{
             page.resizeTheWindowSize({width},{height})

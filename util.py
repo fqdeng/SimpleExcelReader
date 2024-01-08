@@ -41,10 +41,13 @@ class CustomFormatter(logging.Formatter):
         return super().format(record)
 
 
-def init_logging_config():
+def init_logging_config(debug = False):
     logging.basicConfig(level=logging.DEBUG, filename='./config/app.log', filemode='w')
     logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+    if debug:
+        logger.setLevel(logging.DEBUG)
+    else:
+        logger.setLevel(logging.INFO)
     # Create a stream handler (or any other handler)
     handler = logging.StreamHandler()
     # Set the custom formatter for the handler
@@ -63,7 +66,7 @@ def list_files_and_directories(path):
                 result.append(entry + "/")
             else:
                 result.append(entry)
-        logging.info(f"List files and directories in {path}: {result}")
+        logging.debug(f"List files and directories in {path}: {result}")
         return result
     except FileNotFoundError:
         logging.error(f"The path {path} does not exist.")

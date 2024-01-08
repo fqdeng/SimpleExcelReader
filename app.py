@@ -38,7 +38,7 @@ class App(QObject):
         from ace_editor import AceEditorWindow
 
         os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
-        util.init_logging_config()
+        util.init_logging_config(debug=debug)
 
         app = QtWidgets.QApplication(sys.argv)
         main_window = MainWindow()
