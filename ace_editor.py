@@ -59,10 +59,7 @@ class AceEditorHandler(QObject):
                 file_list = util.list_files_and_directories(args[0])
             else:
                 file_list = util.list_files_and_directories(os.getcwd())
-            args = []
-            for item in file_list:
-                args.append(f'"{item}"')
-            js_code = f"page.renderFileList([{','.join(args)}])"
+            js_code = f"page.renderFileList({json.dumps(file_list)})"
             self.ace_editor.run_js_code(js_code)
 
         if command == "execute":
@@ -152,9 +149,8 @@ class AceEditorWindow(SavePositionWindow):
 
     def set_editor_text(self, value):
         # get the ace editor
-        value_json = json.dumps(value)
         js_code = f"""
-        editor.setValue({value_json})
+        editor.setValue({json.dumps(value)})
         """
         # Execute the JavaScript code
         self.run_js_code(js_code)
