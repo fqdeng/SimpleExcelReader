@@ -85,6 +85,8 @@
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/python");
     editor.setKeyboardHandler("ace/keyboard/vim");
+    //limit the max line length
+    editor.setOption("wrap", 100);
 
 
     // init python callbacks
